@@ -31,8 +31,6 @@ class EditProductRequest extends FormRequest
             'status' => 'required',
             'content' => 'required',
             'slug' => 'required|unique:products,id,'.$this->id,
-            'images' => 'required',
-            'images.*' => 'mimes:jpeg,bmp,png|max:10000'
         ];
     }
     public function messages()

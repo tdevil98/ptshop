@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Auth;
 use DataTables;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -77,6 +78,9 @@ class CategoryController extends Controller
                 'user_id' => Auth::user()->id
             ]);
         }
+        $categories = Category::get();
+        Cache::forget('categories');
+        Cache::put('categories', $categories, 60*60);
     }
 
     /**

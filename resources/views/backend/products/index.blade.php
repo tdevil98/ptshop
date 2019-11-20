@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Danh sách sản phẩm</h1>
+                <h1 class="m-0 text-dark">Sản phẩm chính</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -24,9 +24,7 @@
 @endsection
 @section('content')
     <div class="container-fluid">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">Thêm mới sản
-            phẩm
-        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">Thêm mới</button>
     </div>
     <br>
     <div class="container-fluid">
@@ -76,7 +74,6 @@
                                                 <div class="form-group">
                                                     <label>Giá khuyến mại</label>
                                                     <input type="text" class="form-control" name="sale_price"
-                                                           id="sale_price"
                                                            placeholder="Điền giá khuyến mại">
                                                 </div>
                                                 <span class="sale_price_error error"></span>
@@ -101,10 +98,11 @@
                                             <label for="exampleInputFile">Hình ảnh sản phẩm</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
-                                                    <input id="image" class="form-control" type="text" name="image">
-                                                    <input type="button" id="lfm" data-input="image" data-preview="holder" value="Upload">
+                                                    <input type="file" class="custom-file-input" id="images" name="images[]" multiple>
+                                                    <label class="custom-file-label" for="images">Choose file</label>
                                                 </div>
                                                 <div class="input-group-append">
+                                                    <span class="input-group-text" id="">Chọn ảnh</span>
                                                 </div>
                                                 <div class="gallery container preview"></div>
                                                 <span class="images_error error"></span>
@@ -116,8 +114,7 @@
                                             <select class="form-control select2" style="width: 100%;" name="status"
                                                     id="status">
                                                 <option value="">--Chọn trạng thái---</option>
-                                                <option value="1">Đang nhập</option>
-                                                <option value="2">Mở bán</option>
+                                                <option value="1">Đang bán</option>
                                                 <option value="0">Hết hàng</option>
                                             </select>
                                             <span class="status_error error"></span>
@@ -206,29 +203,11 @@
                                             <span class="edit_content_error error"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputFile">Hình ảnh sản phẩm</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="edit_image"
-                                                           name="images[]" multiple>
-                                                    <label id="upload" class="custom-file-label" for="edit_image">Chọn
-                                                        ảnh sản phẩm</label>
-                                                </div>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text" id="">Upload</span>
-                                                </div>
-                                                <br>
-                                                <div class="gallery container editpreview"></div>
-                                                <span class="edit_images_error error"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label>Trạng thái sản phẩm</label>
                                             <select class="form-control select2" style="width: 100%;" name="status"
                                                     id="edit_status">
                                                 <option value="">--Chọn trạng thái---</option>
-                                                <option value="1">Đang nhập</option>
-                                                <option value="2">Mở bán</option>
+                                                <option value="1">Đang bán</option>
                                                 <option value="0">Hết hàng</option>
                                             </select>
                                             <span class="edit_status_error error"></span>
@@ -256,8 +235,7 @@
                                 <th>STT</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Danh mục</th>
-                                <th>Giá gốc</th>
-                                <th>Giá khuyến mãi</th>
+                                <th>Người tạo</th>
                                 <th>Thời gian</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
@@ -321,6 +299,29 @@
                     }
                 });
             });
+            $("#createSubProduct").submit(function () {
+                let formData = new FormData($('#createSubProduct')[0]);
+                $('.error').text('');
+                $.ajax({
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    url: "/admin/products/storesub",
+                    success: function () {
+                        $('#product_table').DataTable().ajax.reload();
+                        $('#addSubModal').modal('hide')
+                        toastr.success( 'Thêm mới thành công!')
+                        $("#createSubProduct")[0].reset();
+                    },
+                    error: function (error) {
+                        toastr.error( 'Có lỗi!')
+                        $.each(error.responseJSON.errors, function (key, value) {
+                            $('.' + key + '_error').text(value[0]);
+                        });
+                    }
+                });
+            });
             $(function () {
                 var t = $('#product_table').DataTable({
                     "language": {
@@ -355,15 +356,14 @@
                         {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                         {data: 'name', name: 'name'},
                         {data: 'category_id', name: 'category_id'},
-                        {data: 'origin_price', name: 'origin_price'},
-                        {data: 'sale_price', name: 'sale_price'},
+                        {data: 'user_id', name: 'user_id'},
                         {data: 'created_at', name: 'created_at'},
                         {data: 'status', name: 'status', searchable: false},
                         {data: 'action', name: 'action', searchable: false},
                     ],
                 });
             });
-            $(document).on('click', '.edit', function () {
+            $(document).on('click', '#edit', function () {
                 let id = $(this).attr('data-id');
                 $.ajax({
                     url: "/admin/products/" + id + "/edit",
@@ -389,7 +389,7 @@
                     processData: false,
                     contentType: false,
                     data: formData,
-                    url: '/admin/products/' + id,
+                    url: '/admin/products/' + id + "/update",
                     success: function () {
                         $('#product_table').DataTable().ajax.reload();
                         $('#editModal').modal('hide');
@@ -405,12 +405,15 @@
                     }
                 });
             });
+            $(document).on('click', '#subProduct', function () {
+                $('#parent_id').val($(this).data('id'));
+            })
             $(document).on('click', '#deleteProduct', function () {
                 let id = $(this).data("id");
                 let token = $("meta[name='csrf-token']").attr("content");
                 Swal.fire({
                     title: 'Bạn có chắc chắn không?',
-                    text: "Xóa sản phẩm này!",
+                    text: "Di chuyển vào thùng rác!",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -427,10 +430,10 @@
                                 "id": id,
                                 "_token": token,
                             },
-                            url: '/admin/products/' + id,
+                            url: '/admin/products/' + id + "/softdelete",
                             success: function () {
                                 $('#product_table').DataTable().ajax.reload();
-                                toastr.success( 'Xóa thành công!')
+                                toastr.success( 'Thành công!')
                             },
                             error: function () {
                                 toastr.error( 'Không thành công xin thử lại!')
@@ -458,10 +461,10 @@
                     }
 
                 };
-                $('#image').on('change', function() {
+                $('#images').on('change', function() {
                     imagesPreview(this, 'div.preview');
                 });
-                $('#edit_image').on('change', function() {
+                $('#edit_images').on('change', function() {
                     imagesPreview(this, 'div.editpreview');
                 });
             });

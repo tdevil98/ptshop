@@ -7,6 +7,7 @@ use App\Http\Requests\EditProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductQuantity;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -33,68 +34,90 @@ class ProductController extends Controller
         $categories = Category::get();
         return view('backend.products.index', compact('categories', 'products'));
     }
-
-    public function getData()
-    {
-        $products = Product::select(['id', 'name', 'origin_price', 'sale_price', 'category_id', 'status', 'created_at']);
-        return DataTables::of($products)
-            ->addIndexColumn()
-            ->addColumn('action', function ($product) {
-                return '<a href="javascript:;" class="btn btn-warning edit" data-id="' . $product->id . '" title="Sửa sản phẩm" data-toggle="modal" data-target="#editModal"><i style="color: white" class="far fa-edit"></i></a>&nbsp;<a id="deleteProduct" href="javascript:;" data-id="' . $product->id . '" class="btn btn-danger" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Xóa sản phẩm"><i class="far fa-trash-alt"></i></a>';
-            })
-            ->editColumn('origin_price',function ($product){
-                return number_format($product->origin_price) . " đồng";
-            })
-            ->editColumn('sale_price',function ($product){
-                return number_format($product->sale_price) . " đồng";
-            })
-            ->editColumn('category_id', function ($product) {
-                return $product->category->name;
-            })
-            ->editColumn('status', function ($product) {
-                if ($product->status) {
-                    return "Đang bán";
-                } elseif ($product->status == 0) {
-                    return "Bị ẩn";
-                } else {
-                    return "Hết hàng";
-                }
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
-    public function getDeleted()
-    {
-        $products = Product::withTrashed()->select(['id', 'name', 'origin_price', 'sale_price', 'category_id', 'status', 'deleted_at']);
-        return DataTables::of($products)
-            ->addIndexColumn()
-            ->addColumn('action', function ($product) {
-                return '<a href="javascript:;" class="btn btn-warning edit" data-id="' . $product->id . '" title="Sửa sản phẩm" data-toggle="modal" data-target="#editModal"><i style="color: white" class="far fa-edit"></i></a>&nbsp;<a id="deleteProduct" href="javascript:;" data-id="' . $product->id . '" class="btn btn-danger" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Xóa sản phẩm"><i class="far fa-trash-alt"></i></a>';
-            })
-            ->editColumn('origin_price',function ($product){
-                return number_format($product->origin_price) . " đồng";
-            })
-            ->editColumn('sale_price',function ($product){
-                return number_format($product->sale_price) . " đồng";
-            })
-            ->editColumn('category_id', function ($product) {
-                return $product->category->name;
-            })
-            ->editColumn('status', function ($product) {
-                if ($product->status) {
-                    return "Đang bán";
-                } elseif ($product->status == 0) {
-                    return "Bị ẩn";
-                } else {
-                    return "Hết hàng";
-                }
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
     public function listDeleted()
     {
         return view('backend.products.trashbin');
+    }
+    public function productQuantity($id){
+        $parent_id = $id;
+        return view('backend.products.productquantity', compact('parent_id'));
+    }
+    public function getData()
+    {
+        $products = Product::select(['id', 'name', 'category_id', 'user_id', 'status', 'created_at']);
+        return DataTables::of($products)
+            ->addIndexColumn()
+            ->addColumn('action', function ($product) {
+                return '<a href="javascript:;" id="edit" class="btn btn-warning" title="Sửa sản phẩm" data-toggle="modal" data-target="#editModal"  data-id="' . $product->id . '"><i style="color: white" class="far fa-edit"></i></a>&nbsp;
+                        <a id="deleteProduct" href="javascript:;" class="btn btn-danger" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Xóa sản phẩm"><i class="far fa-trash-alt"></i></a>
+                        &nbsp;
+                        <a id="subProduct" href="'. route('backend.products.quantity', $product->id). '" data-id="' . $product->id . '" class="btn btn-success" title="Quản lý số lượng hàng" ><i class="fas fa-sign-in-alt"></i></a>';
+            })
+            ->editColumn('category_id', function ($product) {
+                return $product->category->name;
+            })
+            ->editColumn('user_id', function ($product) {
+                return $product->user->name;
+            })
+            ->editColumn('status', function ($product) {
+                if ($product->status) {
+                    return "Đang bán";
+                } elseif ($product->status == 0) {
+                    return "Bị ẩn";
+                } else {
+                    return "Hết hàng";
+                }
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function getDeleted()
+    {
+        $products = Product::onlyTrashed()->select(['id', 'name', 'origin_price', 'sale_price', 'category_id', 'status', 'deleted_at']);
+        return DataTables::of($products)
+            ->addIndexColumn()
+            ->addColumn('action', function ($product) {
+                return '<a id="restore" href="javascript:;" data-id="' . $product->id . '" class="btn btn-success" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Khôi phục sản phẩm"><i class="fas fa-trash-restore-alt"></i></a>
+                        <a id="destroy" href="javascript:;" data-id="' . $product->id . '" class="btn btn-danger" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Xóa vĩnh viễn sản phẩm"><i class="far fa-trash-alt"></i></a>';
+            })
+            ->editColumn('origin_price', function ($product) {
+                return number_format($product->origin_price) . " đồng";
+            })
+            ->editColumn('sale_price', function ($product) {
+                return number_format($product->sale_price) . " đồng";
+            })
+            ->editColumn('category_id', function ($product) {
+                return $product->category->name;
+            })
+            ->editColumn('status', function ($product) {
+                if ($product->status) {
+                    return "Đang bán";
+                } elseif ($product->status == 0) {
+                    return "Bị ẩn";
+                } else {
+                    return "Hết hàng";
+                }
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function getProductQuantity($id){
+        $products = ProductQuantity::where('product_id', $id)->select(['id', 'product_id', 'size', 'quantity', 'created_at']);
+        return DataTables::of($products)
+            ->addIndexColumn()
+            ->addColumn('action', function ($product) {
+                return '<a href="javascript:;" id="edit" class="btn btn-warning" title="Sửa sản phẩm" data-toggle="modal" data-target="#editModal"  data-id="' . $product->id . '"><i style="color: white" class="far fa-edit"></i></a>&nbsp;
+                        <a id="deleteProduct" href="javascript:;" class="btn btn-danger" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Xóa sản phẩm"><i class="far fa-trash-alt"></i></a>
+                        &nbsp;
+                        <a id="subProduct" href="'. route('backend.products.quantity', $product->id). '" data-id="' . $product->id . '" class="btn btn-success" title="Quản lý số lượng hàng" ><i class="fas fa-sign-in-alt"></i></a>';
+            })
+            ->editColumn('product_id', function ($product) {
+                return $product->product->name;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -115,22 +138,41 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $products = Product::create([
+        $product = Product::create([
             'name' => $request->name,
             'slug' => $request->slug,
             'status' => $request->status,
             'category_id' => $request->category_id,
-            'origin_price' => $request->origin_price,
             'sale_price' => $request->sale_price,
+            'origin_price' => $request->origin_price,
             'content' => $request->content,
             'user_id' => Auth::user()->id
         ]);
-        ProductImage::create([
-            'product_id' => $products->id,
-            'image' => $request->image
-        ]);
-
+        $images = $request->file('images');
+        foreach ($images as $image) {
+            $file_name = $image->getClientOriginalName();
+            $path = $image->storeAs("images/products/$product->id", Carbon::now()->format('YmdHs') . $file_name, 'public');
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image' => $path
+            ]);
+        }
         return redirect()->route('backend.products.index');
+    }
+    public function storeQuantity(StoreSubProductRequest $request)
+    {
+        $product = Product::create([
+            'parent_id' => $request->parent_id,
+            'color' => $request->color,
+            'size' => $request->size,
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'status' => $request->status,
+            'category_id' => $request->category_id,
+            'quantity' => $request->quantity,
+            'content' => $request->content,
+            'user_id' => Auth::user()->id
+        ]);
     }
 
     /**
@@ -168,14 +210,14 @@ class ProductController extends Controller
      */
     public function update(EditProductRequest $request, $id)
     {
-        Product::find($id)->update([
-            'name' => $request->get('name'),
-            'slug' => \Illuminate\Support\Str::slug($request->get('name')),
-            'category_id' => $request->get('category_id'),
-            'origin_price' => $request->get('origin_price'),
-            'sale_price' => $request->get('sale_price'),
-            'content' => $request->get('content'),
-            'status' => $request->get('status'),
+        $product = Product::find($id)->update([
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'status' => $request->status,
+            'category_id' => $request->category_id,
+            'sale_price' => $request->sale_price,
+            'origin_price' => $request->origin_price,
+            'content' => $request->content,
             'user_id' => Auth::user()->id,
         ]);
         return response()->json(['mess' => true]);
@@ -189,12 +231,19 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::where('id', $id);
-        $product->delete($product);
+        Product::where('id', $id)->forceDelete();
     }
+
     public function softDelete($id)
     {
-        $product = Product::where('id', $id);
+        $product = Product::where('id', $id)->first();
+        $product->user_id = Auth::user()->id;
+        $product->save();
         $product->delete($product);
+    }
+
+    public function restore($id)
+    {
+        Product::withTrashed()->find($id)->restore();
     }
 }

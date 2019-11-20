@@ -13,7 +13,7 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $names = ['Giày', 'Quần', 'Áo', 'Phụ kiện'];
+        $names = ['Vans', 'Converse', 'Adidas', 'Nike'];
         foreach ($names as $name)
             DB::table('categories')->updateOrInsert([
                 'slug' => Str::slug($name, '-')
@@ -22,7 +22,6 @@ class CategoriesTableSeeder extends Seeder
                     'name' => $name,
                     'parent_id' => 0,
                     'user_id' => 1,
-                    'depth' => 1,
                     'created_at' => \Carbon\Carbon::now(),
                     'updated_at' => \Carbon\Carbon::now()
                 ]);

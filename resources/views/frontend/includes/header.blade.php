@@ -13,22 +13,38 @@
             <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                 <ul class="nav navbar-nav menu_nav ml-auto">
                     <li class="nav-item active"><a class="nav-link" href="/">Trang chủ</a></li>
+                    <li class="nav-item submenu dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false">Danh mục sản phẩm</a>
+                        <ul class="dropdown-menu">
+                            @foreach($categories as $category)
+                                @if($category->parent_id == null)
+                                    <li class="nav-item submenu dropdown"><a data-id="{{$category->id}}" class="nav-link" href="/category/{{$category->slug}}">{{$category->name}}</a></li>
+                                @endif
+                            @endforeach
+{{--                                <li class="nav-item submenu dropdown"><a class="nav-link" href="/category" >Tất cả sản phẩm</a></li>--}}
+                        </ul>
+                    </li>
                     @if(Auth::check())
                         <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false"><img class="avatar avatar-xs" width="25" height="25" src="{{asset('storage/images/default_avatar.png')}}"></a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false"><img class="avatar avatar-xs" width="25" height="25"
+                                                          src="{{asset('storage/images/default_avatar.png')}}"></a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="single-product.html">Cài đặt tài khoản</a></li>
+                                <li class="nav-item"><a class="nav-link" href="single-product.html">Cài đặt tài
+                                        khoản</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{{ url('/logout') }}">Đăng xuất</a>
                             </ul>
                         </li>
                     @else
-                    <li class="nav-item"><a class="nav-link" href="{{route('login')}}">Đăng nhâp/Đăng ký</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('login')}}">Đăng nhâp/Đăng ký</a></li>
                     @endif
                     <li class="nav-item"><a class="nav-link" href="contact.html">Liên hệ</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                    <li class="nav-item"><a href="{{route('frontend.cart')}}" class="cart"><span class="ti-bag"></span></a></li>
                     <li class="nav-item">
                         <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
                     </li>

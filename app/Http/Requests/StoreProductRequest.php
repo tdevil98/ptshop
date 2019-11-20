@@ -26,13 +26,13 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => 'required|max:50',
             'category_id' => 'required',
-            'origin_price' => 'required|integer|min:0|max:10000000',
-            'sale_price' => 'integer|min:0|nullable',
             'status' => 'required',
             'content' => 'required',
+            'origin_price'=> 'required|integer|min:0',
+            'sale_price'=> 'integer|min:0',
             'slug' => 'required|unique:products',
-            'image' => 'required',
-            'images.*' => 'mimes:jpeg,bmp,png|max:10000'
+            'images' => 'required',
+            'images.*' => 'mimes:jpeg,bmp,png,webp|max:10000'
         ];
     }
     public function messages()

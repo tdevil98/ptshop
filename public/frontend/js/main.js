@@ -51,7 +51,7 @@ $(document).ready(function(){
     $(".active-banner-slider").owlCarousel({
         items:1,
         autoplay:false,
-        autoplayTimeout: 5000,
+        autoplayTimeout: 10000,
         loop:true,
         nav:true,
         navText:["<img src='frontend/img/banner/prev.png'>","<img src='frontend/img/banner/next.png'>"],
@@ -63,8 +63,8 @@ $(document).ready(function(){
     ==================================*/
     $(".active-product-area").owlCarousel({
         items:1,
-        autoplay:true,
-        autoplayTimeout: 3000,
+        autoplay:false,
+        autoplayTimeout: 10000,
         loop:true,
         nav:true,
         navText:["<img style='padding-top: 20px' src='frontend/img/product/prev.png'>","<img style='padding-top: 20px' src='frontend/img/product/next.png'>"],
@@ -92,7 +92,7 @@ $(document).ready(function(){
         autoplayTimeout: 5000,
         loop:true,
         nav:true,
-        navText:["<img src='img/product/prev.png'>","<img src='img/product/next.png'>"],
+        navText:["<img src='/frontend/img/product/prev.png'>","<img src='/frontend/img/product/next.png'>"],
         dots:false
     });
 

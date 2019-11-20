@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use View;
+use Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $categories = Cache::remember('categories', 60*60, function() {
+            return DB::table('categories')->get();
+        });
+        View::share('categories', $categories);
     }
 }

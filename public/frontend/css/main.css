@@ -149,10 +149,12 @@ h6 {
   padding: 0px; }
 
 a {
+    color: #0b0b0b;
   text-decoration: none;
   transition: all 0.3s ease-in-out; }
   a:hover, a:focus {
     text-decoration: none;
+      color: #ffba00;
     outline: none; }
 
 button:focus {

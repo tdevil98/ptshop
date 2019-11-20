@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/setcache', 'HomeController@setCache');
-Route::get('/getcache', 'HomeController@getCache');
+Route::get('/', 'Frontend\HomeController@index');
+Route::get('/addtocart/{id}', 'Frontend\HomeController@addToCart')->name('frontend.addtocart');
+Route::get('/cart', 'Frontend\HomeController@getCart')->name('frontend.cart');
+Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('frontend.product');
+Route::get('/category/{slug}', 'Frontend\HomeController@getProductByCate')->name('frontend.category');
 
 Auth::routes();
 
@@ -39,9 +39,16 @@ Route::group([
         Route::post('/store', 'ProductController@store')->name('backend.products.store');
         Route::get('/{product_id}','ProductController@show')->name('backend.products.show');
         Route::get('/{id}/edit','ProductController@edit')->name('backend.products.edit');
-        Route::post('/{id}','ProductController@update')->name('backend.products.update');
-        Route::delete('/{id}','ProductController@destroy')->name('backend.products.destroy');
-        Route::put('/{id}','ProductController@softDelete')->name('backend.products.softDelete');
+        Route::post('/{id}/update','ProductController@update')->name('backend.products.update');
+        Route::delete('/{id}/destroy','ProductController@destroy')->name('backend.products.destroy');
+        Route::put('/{id}/softdelete','ProductController@softDelete')->name('backend.products.softDelete');
+        Route::put('/{id}/restore','ProductController@restore')->name('backend.products.restore');
+        Route::post('/storesub', 'ProductController@storeSub')->name('backend.products.storesub');
+        Route::group(['prefix' => '/{id}'], function (){
+            Route::get('/quantity', 'ProductController@productQuantity')->name('backend.products.quantity');
+            Route::post('/getdataproduct', 'ProductController@getProductQuantity')->name('backend.products.getquantity');
+            Route::post('/create', 'ProductController@storeQuantity')->name('backend.product.store.quantity');
+        });
     });
     //Quản lý người dùng
     Route::group(['prefix' => 'users'], function(){

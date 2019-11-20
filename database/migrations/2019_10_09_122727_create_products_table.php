@@ -17,10 +17,10 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
+            $table->longText('content');
             $table->integer('origin_price');
             $table->integer('sale_price');
-            $table->string('content');
-            $table->smallInteger('status');
+            $table->smallInteger('status')->comment('1- đang bày bán, 0 là bị ẩn');
             $table->integer('user_id');
             $table->integer('category_id');
             $table->softDeletes();
