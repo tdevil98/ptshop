@@ -34,8 +34,14 @@
                 <div class="col-lg-5 offset-lg-1">
                     <div class="s_product_text">
                         <h3>{{$product->name}}</h3>
-                        <h2>{{$product->sale_price}}đ</h2>
-                        <strike><h4>{{$product->origin_price}}đ</h4></strike>
+                        @if(isset($product->sale_price))
+                            <h2>{{$product->sale_price}}đ</h2>
+                            @endif
+                        @if(isset($product->sale_price))
+                            <h4 class="l-through ">{{$product->origin_price}}đ</h4>
+                            @else
+                            <h2 class="">{{$product->origin_price}}đ</h2>
+                        @endif
                         <ul class="list">
                             <li><a class="active" href="#"><span>Nhãn hiệu</span> : {{$product->category->name}}</a></li>
                             <li><a href="#"><span>Trạng thái</span> : Còn hàng</a></li>

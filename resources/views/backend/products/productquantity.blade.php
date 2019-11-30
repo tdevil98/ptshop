@@ -29,48 +29,6 @@
     <br>
     <div class="container-fluid">
         <div class="row">
-            {{--            Start modal--}}
-            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModal"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Thêm mới sản phẩm</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="card">
-                                <form role="form" action="javascript:;" method="post" id="createProduct"
-                                      enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Kích cỡ</label>
-                                            <input type="text" class="form-control" id="size" name="size"
-                                                   placeholder="Nhập kích cỡ sản phẩm">
-                                            <span class="size_error error"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Số lượng</label>
-                                            <input type="text" class="form-control" id="quantity" name="quantity"
-                                                   placeholder="Nhập số lượng sản phẩm">
-                                            <span class="quantity_error error"></span>
-                                        </div>
-                                    <!-- /.card-body -->
-                                    <div class="card-footer">
-                                        <button id="close-modal" class="btn btn-default " data-dismiss="modal">Huỷ bỏ
-                                        </button>
-                                        <button type="submit" class="btn btn-outline-success">Tạo mới</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{--            End modal--}}
             <div class="col-12">
                 <div class="card">
                     <div class="card-body table-responsive p-2">
@@ -96,6 +54,98 @@
         </div>
         <!-- /.row (main row) -->
     </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModal"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm mới sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <form role="form" action="javascript:;" method="post" id="createProduct"
+                              enctype="multipart/form-data">
+                            @csrf
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input hidden type="text" class="form-control" id="product_id" name="product_id"
+                                           value="{{$parent_id}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Kích cỡ</label>
+                                    <input type="text" class="form-control" id="size" name="size"
+                                           placeholder="Nhập kích cỡ sản phẩm">
+                                    <span class="size_error error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số lượng</label>
+                                    <input type="text" class="form-control" id="quantity" name="quantity"
+                                           placeholder="Nhập số lượng sản phẩm">
+                                    <span class="quantity_error error"></span>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <button id="close-modal" class="btn btn-default " data-dismiss="modal">Huỷ bỏ
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-success">Tạo mới</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <form role="form" action="javascript:;" method="post" id="editProduct"
+                              enctype="multipart/form-data">
+                            @csrf
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input hidden type="text" class="form-control" id="edit_id" name="id">
+                                </div>
+                                <div class="form-group">
+                                    <input hidden type="text" class="form-control" id="edit_parent_id" name="parent_id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Kích cỡ</label>
+                                    <input type="text" class="form-control" id="edit_size" name="size"
+                                           placeholder="Nhập kích cỡ sản phẩm">
+                                    <span class="size_error error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số lượng</label>
+                                    <input type="text" class="form-control" id="edit_quantity" name="quantity"
+                                           placeholder="Nhập số lượng sản phẩm">
+                                    <span class="quantity_error error"></span>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <button id="close-modal" class="btn btn-default " data-dismiss="modal">Huỷ bỏ
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-success">Cập nhật</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
@@ -115,16 +165,15 @@
                     processData: false,
                     contentType: false,
                     data: formData,
-                    url: "{{route('backend.product.store.quantity')}}",
+                    url: "{{route('backend.product.store.quantity', $parent_id)}}",
                     success: function () {
                         $('#product_table').DataTable().ajax.reload();
                         $('#createModal').modal('hide')
-                        toastr.success( 'Thêm mới thành công!')
-                        $('#content').summernote('reset');
+                        toastr.success('Thêm mới thành công!')
                         $("#createProduct")[0].reset();
                     },
                     error: function (error) {
-                        toastr.error( 'Có lỗi!')
+                        toastr.error('Có lỗi!')
                         $.each(error.responseJSON.errors, function (key, value) {
                             $('.' + key + '_error').text(value[0]);
                         });
@@ -156,6 +205,14 @@
                             sortDescending: ": Sắp xếp cột theo thứ tự giảm dần"
                         }
                     },
+                    columnDefs: [ {
+                        targets: [ 0, 1, 2, 3 ],
+                        render: function ( data, type, row ) {
+                            return type === 'display' && data.length > 10 ?
+                                data.substr( 0, 10 ) +'…' :
+                                data;
+                        }
+                    } ],
                     processing: true,
                     serverSide: true,
                     ajax: {
@@ -175,17 +232,13 @@
             $(document).on('click', '#edit', function () {
                 let id = $(this).attr('data-id');
                 $.ajax({
-                    url: "/admin/products/" + id + "/edit",
+                    url: "/admin/products/" + id + "/edit-quantity",
                     dataType: "json",
                     success: function (product) {
                         $('#edit_id').val(product.id);
-                        $('#edit_name').val(product.name);
-                        $('#edit_slug').val(product.slug),
-                            $("#edit_category_id option[value=\'" + product.category_id + "\']").attr('selected', 'selected');
-                        $('#edit_sale_price').val(product.sale_price);
-                        $('#edit_origin_price').val(product.origin_price);
-                        $("#edit_content").summernote('code', product.content);
-                        $("#edit_status option[value=\'" + product.status + "\']").attr('selected', 'selected');
+                        $('#edit_parent_id').val(product.parent_id);
+                        $('#edit_size').val(product.size);
+                        $('#edit_quantity').val(product.quantity);
                     }
                 })
             })
@@ -198,16 +251,16 @@
                     processData: false,
                     contentType: false,
                     data: formData,
-                    url: '/admin/products/' + id + "/update",
+                    url: '/admin/products/' + id + "/update-quantity",
                     success: function () {
                         $('#product_table').DataTable().ajax.reload();
                         $('#editModal').modal('hide');
                         $("#editProduct")[0].reset();
                         $('#edit_content').summernote('reset');
-                        toastr.success( 'Sửa thành công!')
+                        toastr.success('Sửa thành công!')
                     },
                     error: function (error) {
-                        toastr.error( 'Có lỗi!')
+                        toastr.error('Có lỗi!')
                         $.each(error.responseJSON.errors, function (key, value) {
                             $('.edit_' + key + '_error').text(value[0]);
                         });
@@ -229,51 +282,25 @@
                 }).then((result) => {
                     if (result.value) {
                         $.ajax({
-                            type: 'PUT',
+                            type: 'delete',
                             processData: false,
                             contentType: false,
                             data: {
                                 "id": id,
                                 "_token": token,
                             },
-                            url: '/admin/products/' + id + "/softdelete",
+                            url: '/admin/products/' + id + "/destroy-quantity",
                             success: function () {
                                 $('#product_table').DataTable().ajax.reload();
-                                toastr.success( 'Thành công!')
+                                toastr.success('Thành công!')
                             },
                             error: function () {
-                                toastr.error( 'Không thành công xin thử lại!')
+                                toastr.error('Không thành công xin thử lại!')
                             }
                         });
                     }
                 })
             })
-            $(function() {
-                // Multiple images preview in browser
-                var imagesPreview = function(input, placeToInsertImagePreview) {
-
-                    if (input.files) {
-                        var filesAmount = input.files.length;
-
-                        for (i = 0; i < filesAmount; i++) {
-                            var reader = new FileReader();
-
-                            reader.onload = function(event) {
-                                $($.parseHTML('<img>')).attr( {src: event.target.result} ).css({width: 100,height: 100, padding: 10}).addClass('image[]').appendTo(placeToInsertImagePreview);
-                            }
-
-                            reader.readAsDataURL(input.files[i]);
-                        }
-                    }
-
-                };
-                $('#images').on('change', function() {
-                    imagesPreview(this, 'div.preview');
-                });
-                $('#edit_images').on('change', function() {
-                    imagesPreview(this, 'div.editpreview');
-                });
-            });
         });
     </script>
 @endsection

@@ -1,4 +1,7 @@
 @extends('frontend.layouts.master')
+@section('title')
+    Lọc sản phẩm
+    @endsection
 @section('banner')
     <section class="banner-area organic-breadcrumb">
         <div class="container">
@@ -112,8 +115,12 @@
                                     <div class="product-details">
                                         <h6>{{$product->name}}</h6>
                                         <div class="price">
-                                            <h6>{{$product->sale_price}}</h6>
-                                            <h6 class="l-through">{{$product->origin_price}}</h6>
+                                            @if(isset($product->sale_price))
+                                            <h6>{{number_format($product->origin_price)}}đ</h6>
+                                            <h6 class="l-through">{{number_format($product->origin_price)}}đ</h6>
+                                                @else
+                                                <h6>{{number_format($product->origin_price)}}đ</h6>
+                                                @endif
                                         </div>
                                         <div class="prd-bottom">
 

@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\StoreQuantityProductRequest;
 use Auth;
 use DataTables;
 
@@ -109,9 +110,7 @@ class ProductController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($product) {
                 return '<a href="javascript:;" id="edit" class="btn btn-warning" title="Sửa sản phẩm" data-toggle="modal" data-target="#editModal"  data-id="' . $product->id . '"><i style="color: white" class="far fa-edit"></i></a>&nbsp;
-                        <a id="deleteProduct" href="javascript:;" class="btn btn-danger" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Xóa sản phẩm"><i class="far fa-trash-alt"></i></a>
-                        &nbsp;
-                        <a id="subProduct" href="'. route('backend.products.quantity', $product->id). '" data-id="' . $product->id . '" class="btn btn-success" title="Quản lý số lượng hàng" ><i class="fas fa-sign-in-alt"></i></a>';
+                        <a id="deleteProduct" href="javascript:;" class="btn btn-danger" data-id="' . $product->id . '" data-token="' . csrf_token() . '" title="Xóa sản phẩm"><i class="far fa-trash-alt"></i></a>';
             })
             ->editColumn('product_id', function ($product) {
                 return $product->product->name;
@@ -159,20 +158,15 @@ class ProductController extends Controller
         }
         return redirect()->route('backend.products.index');
     }
-    public function storeQuantity(StoreSubProductRequest $request)
+    public function storeQuantity(StoreQuantityProductRequest $request)
     {
-        $product = Product::create([
-            'parent_id' => $request->parent_id,
-            'color' => $request->color,
+        $product = ProductQuantity::create([
+            'product_id' => $request->product_id,
             'size' => $request->size,
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'status' => $request->status,
-            'category_id' => $request->category_id,
             'quantity' => $request->quantity,
-            'content' => $request->content,
             'user_id' => Auth::user()->id
         ]);
+        return response()->json(['mess' => true]);
     }
 
     /**
@@ -200,6 +194,11 @@ class ProductController extends Controller
         $product = Product::find($id);
         return $product;
     }
+    public function editQuantity($id)
+    {
+        $product = ProductQuantity::find($id);
+        return $product;
+    }
 
     /**
      * Update the specified resource in storage.
@@ -210,7 +209,7 @@ class ProductController extends Controller
      */
     public function update(EditProductRequest $request, $id)
     {
-        $product = Product::find($id)->update([
+        Product::find($id)->update([
             'name' => $request->name,
             'slug' => $request->slug,
             'status' => $request->status,
@@ -218,6 +217,15 @@ class ProductController extends Controller
             'sale_price' => $request->sale_price,
             'origin_price' => $request->origin_price,
             'content' => $request->content,
+            'user_id' => Auth::user()->id,
+        ]);
+        return response()->json(['mess' => true]);
+    }
+    public function updateQuantity(StoreQuantityProductRequest $request)
+    {
+        ProductQuantity::find($request->id)->update([
+            'size' => $request->size,
+            'slug' => $request->quantity,
             'user_id' => Auth::user()->id,
         ]);
         return response()->json(['mess' => true]);
@@ -232,6 +240,10 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::where('id', $id)->forceDelete();
+    }
+    public function destroyQuantity($id)
+    {
+        ProductQuantity::where('id', $id)->forceDelete();
     }
 
     public function softDelete($id)

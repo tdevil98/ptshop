@@ -35,7 +35,7 @@
                             <ul class="dropdown-menu">
                                 <li class="nav-item"><a class="nav-link" href="single-product.html">Cài đặt tài
                                         khoản</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{ url('/logout') }}">Đăng xuất</a>
+                                <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Đăng xuất</a>
                             </ul>
                         </li>
                     @else

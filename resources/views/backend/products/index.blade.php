@@ -149,8 +149,7 @@
                                     @csrf
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">ID sản phẩm</label>
-                                            <input type="text" class="form-control" id="edit_id" name="edit_id"
+                                            <input type="text" hidden class="form-control" id="edit_id" name="edit_id"
                                                    readonly>
                                         </div>
                                         <div class="form-group">
@@ -352,6 +351,14 @@
                         url: '/admin/products/getdata',
                         type: "POST",
                     },
+                    columnDefs: [ {
+                        targets: [ 0, 1, 2, 3 ],
+                        render: function ( data, type, row ) {
+                            return type === 'display' && data.length > 20 ?
+                                data.substr( 0, 20 ) +'…' :
+                                data;
+                        }
+                    } ],
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                         {data: 'name', name: 'name'},

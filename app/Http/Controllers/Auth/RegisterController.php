@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -48,11 +48,23 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $messages = [
+            'name.required' => 'Họ và tên không được để trống.',
+            'name.max' => 'Họ và tên không quá 50 ký tự.',
+            'email.required' => 'Email không được để trông',
+            'email.email' => 'Yêu cầu nhập đúng định dạng email',
+            'email.max' => 'Email nhập vào không quá 50 ký tự',
+            'email.unique' => 'Email này đã tồn tại vui lòng đăng nhập hoặc quên mật khẩu',
+            'password.required' => 'Mật khẩu không được để trống',
+            'password.confirmed' => 'Xác nhận mật khẩu không trùng nhau',
+            'password.min' => 'Mật khẩu phải tối thiểu 8 kí tự',
+
+        ];
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            'name' => ['required', 'max:50'],
+            'email' => ['required', 'email', 'max:50', 'unique:users'],
+            'password' => ['required', 'min:8', 'confirmed'],
+        ],$messages);
     }
 
     /**

@@ -183,8 +183,8 @@
                             <div class="product-details">
                                 <h6><a href="/product/{{$product->slug}}">{{$product->name}}</a></h6>
                                 <div class="price">
-                                    <h6>{{number_format($product->sale_price)}}đ</h6>
-                                    <h6 class="l-through">{{number_format($product->origin_price)}}đ</h6>
+                                    @if(isset($product->sale_price))<h6>{{number_format($product->sale_price)}} đ </h6>@endif
+                                    <h6 class="@if(isset($product->sale_price))l-through @endif">{{number_format($product->origin_price)}}đ</h6>
                                 </div>
                                 <div class="prd-bottom">
                                     <a href="/product/{{$product->slug}}" class="social-info">

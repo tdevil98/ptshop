@@ -24,7 +24,11 @@ class HomeController extends Controller
     public function addToCart($id){
         if (Auth::check()){
             $product = Product::find($id);
-            Cart::add($product->id, $product->name, 1, $product->sale_price, 1);
+            if (isset($product->sale_price)){
+                Cart::add($product->id, $product->name, 1, $product->sale_price, 1);
+            }else{
+                Cart::add($product->id, $product->name, 1, $product->origin_price, 1);
+            }
             return response()->json(['message' => true]);
         }else{
             return response()->json(['message' => false]);
@@ -47,5 +51,15 @@ class HomeController extends Controller
         $cate = Category::where('slug', $slug)->first();
         $products = Product::where('category_id', $cate->id)->get();
         return view('frontend.browe_product', compact('products', 'cate'));
+    }
+    public function getBill(){
+        $user = Auth::user();
+        $products_cart = Cart::content();
+        $products = [];
+        foreach($products_cart as $key => $value){
+            $product = Product::find($value->id);
+            array_push($products, $product);
+        }
+        return view('frontend.checkout', compact('products', 'user'));
     }
 }

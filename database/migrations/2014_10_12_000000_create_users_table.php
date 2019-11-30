@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('avatar')->default('storage/images/default_avatar.png')->comment('Anh dai dien nguoi dung');
             $table->string('address')->nullable();
+            $table->integer('phone_number');
             $table->integer('is_admin')->default(0);
             $table->rememberToken();
             $table->softDeletes();

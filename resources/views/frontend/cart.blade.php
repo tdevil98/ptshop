@@ -1,4 +1,7 @@
 @extends('frontend.layouts.master')
+@section('title')
+    Giỏ hàng
+    @endsection
 @section('banner')
     <section class="banner-area organic-breadcrumb">
         <div class="container">
@@ -42,40 +45,36 @@
                                 </div>
                             </td>
                             <td>
-                                <h5>{{number_format($product->sale_price)}}đ</h5>
+                                <h5>@if(isset($product->sale_price)){{number_format($product->sale_price)}}@else{{number_format($product->origin_price)}}@endifđ</h5>
                             </td>
                             <td>
                                 <div class="product_count">
                                     <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
                                            class="input-text qty">
-                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
-                                            class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
                                 </div>
                             </td>
                             <td>
-                                <h5>{{number_format($product->sale_price)}}đ</h5>
+                                <h5>@if(isset($product->sale_price)){{number_format($product->sale_price)}}@else{{number_format($product->origin_price)}}@endifđ</h5>
                             </td>
                         </tr>
                         @endforeach
-                        <tr class="bottom_button">
-                            <td>
-                                <a class="gray_btn" href="#">Cập nhật giỏ hàng</a>
-                            </td>
-                            <td>
+{{--                        <tr class="bottom_button">--}}
+{{--                            <td>--}}
+{{--                                <a class="gray_btn" href="#">Cập nhật giỏ hàng</a>--}}
+{{--                            </td>--}}
+{{--                            <td>--}}
 
-                            </td>
-                            <td>
+{{--                            </td>--}}
+{{--                            <td>--}}
 
-                            </td>
-                            <td>
-                                <div class="cupon_text d-flex align-items-center">
-                                    <input type="text" placeholder="Mã giảm giá">
-                                    <a class="primary-btn" href="#">Áp dụng</a>
-                                </div>
-                            </td>
-                        </tr>
+{{--                            </td>--}}
+{{--                            <td>--}}
+{{--                                <div class="cupon_text d-flex align-items-center">--}}
+{{--                                    <input type="text" placeholder="Mã giảm giá">--}}
+{{--                                    <a class="primary-btn" href="#">Áp dụng</a>--}}
+{{--                                </div>--}}
+{{--                            </td>--}}
+{{--                        </tr>--}}
                         <tr>
                             <td>
 
@@ -87,7 +86,7 @@
                                 <h5>Tổng cộng</h5>
                             </td>
                             <td>
-                                <h5>$2160.00</h5>
+                                <h5>{{Cart::subtotal()}}đ</h5>
                             </td>
                         </tr>
 {{--                        <tr class="shipping_area">--}}
@@ -136,8 +135,8 @@
                             </td>
                             <td>
                                 <div class="checkout_btn_inner d-flex align-items-center">
-                                    <a class="gray_btn" href="/">Tiếp tục mua sắm</a>
-                                    <a class="primary-btn" href="#">Tiến hành thanh toán</a>
+                                    <a class="gray_btn" href="/">Trang chủ</a>
+                                    <a class="primary-btn" href="{{route('frontend.get-bill')}}">Tiến hành thanh toán</a>
                                 </div>
                             </td>
                         </tr>

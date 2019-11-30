@@ -16,12 +16,12 @@ Route::get('/addtocart/{id}', 'Frontend\HomeController@addToCart')->name('fronte
 Route::get('/cart', 'Frontend\HomeController@getCart')->name('frontend.cart');
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('frontend.product');
 Route::get('/category/{slug}', 'Frontend\HomeController@getProductByCate')->name('frontend.category');
+Route::get('/checkout', 'Frontend\HomeController@getBill')->name('frontend.get-bill');
 
 Auth::routes();
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::group([
     'namespace' => 'Backend',
@@ -43,11 +43,13 @@ Route::group([
         Route::delete('/{id}/destroy','ProductController@destroy')->name('backend.products.destroy');
         Route::put('/{id}/softdelete','ProductController@softDelete')->name('backend.products.softDelete');
         Route::put('/{id}/restore','ProductController@restore')->name('backend.products.restore');
-        Route::post('/storesub', 'ProductController@storeSub')->name('backend.products.storesub');
         Route::group(['prefix' => '/{id}'], function (){
             Route::get('/quantity', 'ProductController@productQuantity')->name('backend.products.quantity');
             Route::post('/getdataproduct', 'ProductController@getProductQuantity')->name('backend.products.getquantity');
             Route::post('/create', 'ProductController@storeQuantity')->name('backend.product.store.quantity');
+            Route::get('/edit-quantity','ProductController@editQuantity')->name('backend.product.edit.quantity');
+            Route::post('/update-quantity', 'ProductController@updateQuantity')->name('backend.product.update.quantity');
+            Route::delete('/destroy-quantity', 'ProductController@destroyQuantity')->name('backend.product.destroy.quantity');
         });
     });
     //Quản lý người dùng
