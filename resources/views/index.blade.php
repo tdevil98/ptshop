@@ -19,13 +19,13 @@
                                 </div>
                             </div>
                             <div class="col-lg-7">
-                                <div class="banner-img">
-                                    <img class="img-fluid" src="img/banner/banner-img.png" alt="">
-                                </div>
+{{--                                <div class="banner-img">--}}
+{{--                                    <img class="img-fluid" src="img/banner/banner-img.png" alt="">--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                         <!-- single-slide -->
-                        <div class="row single-slide">
+                        <div class="row single-slide align-items-center d-flex">
                             <div class="col-lg-5">
                                 <div class="banner-content">
                                     <h1>Nike New <br>Collection!</h1>
@@ -38,9 +38,9 @@
                                 </div>
                             </div>
                             <div class="col-lg-7">
-                                <div class="banner-img">
-                                    <img class="img-fluid" src="img/banner/banner-img.png" alt="">
-                                </div>
+{{--                                <div class="banner-img">--}}
+{{--                                    <img class="img-fluid" src="img/banner/banner-img.png" alt="">--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                     </div>

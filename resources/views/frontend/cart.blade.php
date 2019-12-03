@@ -7,10 +7,10 @@
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
                 <div class="col-first">
-                    <h1>Shopping Cart</h1>
+                    <h1>Giỏ hàng</h1>
                     <nav class="d-flex align-items-center">
-                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="category.html">Cart</a>
+                        <a href="/">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{{route('frontend.cart')}}">Giỏ hàng</a>
                     </nav>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                                         <img width="100" height="100" src="{{asset('storage/'. $product->image->first()->image)}}" alt="">
                                     </div>
                                     <div class="media-body">
-                                        <p>{{$product->name}}</p>
+                                        <p><a href="{{route('frontend.product', $product->slug)}}">{{$product->name}}</a></p>
                                     </div>
                                 </div>
                             </td>
@@ -58,23 +58,19 @@
                             </td>
                         </tr>
                         @endforeach
-{{--                        <tr class="bottom_button">--}}
-{{--                            <td>--}}
-{{--                                <a class="gray_btn" href="#">Cập nhật giỏ hàng</a>--}}
-{{--                            </td>--}}
-{{--                            <td>--}}
+                        <tr class="bottom_button">
+                            <td>
+                                <a class="gray_btn" href="{{route('frontend.cart')}}">Cập nhật giỏ hàng</a>
+                            </td>
+                            <td>
 
-{{--                            </td>--}}
-{{--                            <td>--}}
+                            </td>
+                            <td>
 
-{{--                            </td>--}}
-{{--                            <td>--}}
-{{--                                <div class="cupon_text d-flex align-items-center">--}}
-{{--                                    <input type="text" placeholder="Mã giảm giá">--}}
-{{--                                    <a class="primary-btn" href="#">Áp dụng</a>--}}
-{{--                                </div>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
 
