@@ -25,9 +25,9 @@ class HomeController extends Controller
         if (Auth::check()){
             $product = Product::find($id);
             if (isset($product->sale_price)){
-                Cart::add($product->id, $product->name, 1, $product->sale_price, 1);
+                Cart::add($product->id, $product->name, 1, $product->sale_price, 1, ['slug' => $product->slug, 'image' => $product->image->first()->image]);
             }else{
-                Cart::add($product->id, $product->name, 1, $product->origin_price, 1);
+                Cart::add($product->id, $product->name, 1, $product->origin_price, 1, ['slug' => $product->slug, 'image' => $product->image->first()->image]);
             }
             return response()->json(['message' => true]);
         }else{
@@ -35,13 +35,20 @@ class HomeController extends Controller
         }
     }
     public function getCart(){
-        $products_cart = Cart::content();
-        $products = [];
-        foreach($products_cart as $key => $value){
-            $product = Product::find($value->id);
-            array_push($products, $product);
+        if (!Auth::user()){
+            return redirect()->route('login');
+        }else{
+            return view('frontend.cart');
         }
-        return view('frontend.cart', compact('products'));
+    }
+    public function updateCart(Request $request){
+        $quantity = $request->quantity;
+        $i = 0;
+        foreach (Cart::content() as $product){
+            Cart::update($product->rowId, $quantity[$i]);
+            $i++;
+        }
+        return response()->json(['message'=> true]);
     }
     public function productDetail($slug){
         $product = Product::where('slug', $slug)->first();
@@ -61,5 +68,9 @@ class HomeController extends Controller
             array_push($products, $product);
         }
         return view('frontend.checkout', compact('products', 'user'));
+    }
+    public function getSubtotal(){
+        $subtotal = Cart::subtotal();
+        return response()->json(['subtotal' => $subtotal]);
     }
 }

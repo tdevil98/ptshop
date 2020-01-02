@@ -15,9 +15,8 @@
     <meta name="keywords" content="">
     <!-- meta character set -->
     <meta charset="UTF-8">
-    <!--
-        CSS
-        ============================================= -->
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <!-- CSS============================================= -->
     <link rel="stylesheet" href="{{asset('frontend/css/linearicons.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/css/themify-icons.css')}}">

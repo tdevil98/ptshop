@@ -32,35 +32,35 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($products as $product)
+                        @foreach (Cart::content() as $product)
                         <tr>
                             <td>
                                 <div class="media">
                                     <div class="d-flex">
-                                        <img width="100" height="100" src="{{asset('storage/'. $product->image->first()->image)}}" alt="">
+                                        <img width="100" height="100" src="{{asset('storage/'. $product->options->image)}}" alt="">
                                     </div>
                                     <div class="media-body">
-                                        <p><a href="{{route('frontend.product', $product->slug)}}">{{$product->name}}</a></p>
+                                        <p><a href="{{route('frontend.product', $product->options->slug)}}">{{$product->name}}</a></p>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <h5>@if(isset($product->sale_price)){{number_format($product->sale_price)}}@else{{number_format($product->origin_price)}}@endifđ</h5>
+                                <h5>{{number_format($product->price)}}đ</h5>
                             </td>
                             <td>
                                 <div class="product_count">
-                                    <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
+                                    <input type="number" name="qty" id="sst{{$product->id}}" maxlength="12" value="{{$product->qty}}" min="0" title="Quantity:"
                                            class="input-text qty">
                                 </div>
                             </td>
                             <td>
-                                <h5>@if(isset($product->sale_price)){{number_format($product->sale_price)}}@else{{number_format($product->origin_price)}}@endifđ</h5>
+                                <h5>{{number_format($product->total)}}đ</h5>
                             </td>
                         </tr>
                         @endforeach
                         <tr class="bottom_button">
                             <td>
-                                <a class="gray_btn" href="{{route('frontend.cart')}}">Cập nhật giỏ hàng</a>
+                                <a id="update" class="gray_btn" href="javascript:;">Cập nhật giỏ hàng</a>
                             </td>
                             <td>
 
@@ -142,4 +142,27 @@
             </div>
         </div>
     </section>
+    @endsection
+@section('script')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(document).on('click', "#update", function () {
+            var quantity = [];
+            $(".qty").each(function(){
+                quantity.push($(this).val())
+            })
+            $.ajax({
+                type: 'post',
+                data: {quantity: quantity},
+                url: '/update-cart',
+                success: function () {
+                    toastr.success( 'Cập nhật giỏ hàng thành công!')
+                }
+            })
+        })
+    </script>
     @endsection

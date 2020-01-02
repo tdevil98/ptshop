@@ -17,6 +17,7 @@ Route::get('/cart', 'Frontend\HomeController@getCart')->name('frontend.cart');
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('frontend.product');
 Route::get('/category/{slug}', 'Frontend\HomeController@getProductByCate')->name('frontend.category');
 Route::get('/checkout', 'Frontend\HomeController@getBill')->name('frontend.get-bill');
+Route::post('/update-cart', 'FrontEnd\HomeController@updateCart');
 
 Auth::routes();
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

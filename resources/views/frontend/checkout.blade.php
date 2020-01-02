@@ -1,4 +1,7 @@
 @extends('frontend.layouts.master')
+@section('title')
+    Thanh toán
+    @endsection
 @section('banner')
     <section class="banner-area organic-breadcrumb">
         <div class="container">
@@ -103,14 +106,14 @@
                             <h2>Đơn hàng</h2>
                             <ul class="list">
                                 <li><a href="#">Sản phẩm <span>Tổng tiền</span></a></li>
-                                <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
+                                @foreach(Cart::content() as $product)
+                                <li><a href="/product/{{$product->options->slug}}">{{$product->name}}<span class="middle">x {{$product->qty}}</span> <span class="">{{$product->price}} đ</span></a></li>
+                                    @endforeach
                             </ul>
                             <ul class="list list_2">
-                                <li><a href="#">Giá tạm thời <span>$2160.00</span></a></li>
-                                <li><a href="#">Phí ship <span>Flat rate: $50.00</span></a></li>
-                                <li><a href="#">Tổng tiền <span>$2210.00</span></a></li>
+                                <li><a href="#">Giá tạm thời <span>{{Cart::subtotal()}}đ</span></a></li>
+                                <li><a href="#">Thuế <span>{{Cart::tax()}}đ</span></a></li>
+                                <li><a href="#">Tổng tiền <span>{{Cart::total()}}đ</span></a></li>
                             </ul>
                             <a class="primary-btn" href="#">Xác nhận đơn hàng</a>
                         </div>
