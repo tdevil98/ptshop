@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductImage;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Arr;
 
 class HomeController extends Controller
 {
@@ -43,12 +43,18 @@ class HomeController extends Controller
     }
     public function updateCart(Request $request){
         $quantity = $request->quantity;
+        $price = [];
         $i = 0;
         foreach (Cart::content() as $product){
             Cart::update($product->rowId, $quantity[$i]);
             $i++;
+            array_push($price, number_format($product->total));
         }
-        return response()->json(['message'=> true]);
+        return response()->json(['price'=> $price]);
+    }
+    public function removeCart(Request $request){
+        Cart::remove($request->rowId);
+        return response()->json(['error'=> false]);
     }
     public function productDetail($slug){
         $product = Product::where('slug', $slug)->first();

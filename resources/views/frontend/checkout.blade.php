@@ -69,32 +69,10 @@
                                 <input type="text" class="form-control" id="email" name="compemailany">
                                 <span class="placeholder" data-placeholder="Địa chỉ email"></span>
                             </div>
-{{--                            <div class="col-md-12 form-group p_star">--}}
-{{--                                <select class="country_select">--}}
-{{--                                    <option value="1">Country</option>--}}
-{{--                                    <option value="2">Country</option>--}}
-{{--                                    <option value="4">Country</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add1" name="add1">
-                                <span class="placeholder" data-placeholder="Xã/Phường"></span>
+                                <input type="text" class="form-control" id="address" name="address">
+                                <span class="placeholder" data-placeholder="Địa chỉ"></span>
                             </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add2" name="add2">
-                                <span class="placeholder" data-placeholder="Quận/Huyện"></span>
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="city" name="city">
-                                <span class="placeholder" data-placeholder="Thành phố"></span>
-                            </div>
-{{--                            <div class="col-md-12 form-group p_star">--}}
-{{--                                <select class="country_select">--}}
-{{--                                    <option value="1">District</option>--}}
-{{--                                    <option value="2">District</option>--}}
-{{--                                    <option value="4">District</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
                             <div class="col-md-12 form-group">
                                 <h3>Ghi chú thêm</h3>
                                 <textarea class="form-control" name="message" id="message" rows="1" placeholder="Ghi chú"></textarea>

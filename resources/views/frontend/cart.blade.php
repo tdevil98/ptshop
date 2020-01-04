@@ -29,6 +29,7 @@
                             <th scope="col">Giá</th>
                             <th scope="col">Số lượng</th>
                             <th scope="col">Tổng tiền</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -49,12 +50,17 @@
                             </td>
                             <td>
                                 <div class="product_count">
-                                    <input type="number" name="qty" id="sst{{$product->id}}" maxlength="12" value="{{$product->qty}}" min="0" title="Quantity:"
+                                    <input type="number" name="qty" maxlength="12" value="{{$product->qty}}" min="0" title="Quantity:"
                                            class="input-text qty">
                                 </div>
                             </td>
                             <td>
-                                <h5>{{number_format($product->total)}}đ</h5>
+                                <h5 class="price">{{number_format($product->total)}}đ</h5>
+                            </td>
+                            <td>
+                                <button title="Xóa" type="button" class="close remove" aria-label="Close" data-id="{{$product->rowId}}">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </td>
                         </tr>
                         @endforeach
@@ -82,7 +88,7 @@
                                 <h5>Tổng cộng</h5>
                             </td>
                             <td>
-                                <h5>{{Cart::subtotal()}}đ</h5>
+                                <h5>{{Cart::total()}}đ</h5>
                             </td>
                         </tr>
 {{--                        <tr class="shipping_area">--}}
@@ -150,6 +156,18 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        $(document).on('click', ".remove", function () {
+            var rowId = $(this).data('id');
+            var product = $(this);
+            $.ajax({
+                type: 'post',
+                data: {rowId : rowId},
+                url: '/remove-cart',
+                success: function () {
+                    product.parent().parent().remove();
+                }
+            })
+        })
         $(document).on('click', "#update", function () {
             var quantity = [];
             $(".qty").each(function(){
@@ -159,7 +177,10 @@
                 type: 'post',
                 data: {quantity: quantity},
                 url: '/update-cart',
-                success: function () {
+                success: function (res) {
+                    $(".price").each(function(i){
+                        $(this).html(res.price[i]+"đ");
+                    })
                     toastr.success( 'Cập nhật giỏ hàng thành công!')
                 }
             })
