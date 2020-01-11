@@ -10,18 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::middleware('auth')->group(function (){
+    Route::get('/addtocart/{id}', 'Frontend\HomeController@addToCart')->name('frontend.addtocart');
+    Route::get('/cart', 'Frontend\HomeController@getCart')->name('frontend.cart');
+    Route::get('/checkout', 'Frontend\HomeController@getBill')->name('frontend.get-bill');
+    Route::post('/update-cart', 'FrontEnd\HomeController@updateCart');
+    Route::post('/remove-cart', 'FrontEnd\HomeController@removeCart');
+    Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+});
 Route::get('/', 'Frontend\HomeController@index');
-Route::get('/addtocart/{id}', 'Frontend\HomeController@addToCart')->name('frontend.addtocart');
-Route::get('/cart', 'Frontend\HomeController@getCart')->name('frontend.cart');
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('frontend.product');
 Route::get('/category/{slug}', 'Frontend\HomeController@getProductByCate')->name('frontend.category');
-Route::get('/checkout', 'Frontend\HomeController@getBill')->name('frontend.get-bill');
-Route::post('/update-cart', 'FrontEnd\HomeController@updateCart');
-Route::post('/remove-cart', 'FrontEnd\HomeController@removeCart');
 
 Auth::routes();
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 

@@ -55,23 +55,22 @@
             <div class="billing_details">
                 <div class="row">
                     <div class="col-lg-8">
-                        <h3>Billing Details</h3>
+                        <h3>Chi tiết hóa đơn</h3>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="name" name="name">
-                                <span class="placeholder" data-placeholder="Họ tên"></span>
+                                <input type="text" placeholder="Họ và tên" class="form-control" id="name" name="name" value="@if(isset(Auth::user()->name)){{Auth::user()->name}}@endif">
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="number" name="number">
-                                <span class="placeholder" data-placeholder="Số điện thoại"></span>
+                                <input type="text" placeholder="Số điện thoại" class="form-control" id="number" name="number" value="@if(isset(Auth::user()->phone_number)){{Auth::user()->phone_number}}@endif">
+{{--                                <span class="placeholder" data-placeholder="Số điện thoại"></span>--}}
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany">
-                                <span class="placeholder" data-placeholder="Địa chỉ email"></span>
+                                <input type="text" placeholder="Email" class="form-control" id="email" name="compemailany" value="@if(isset(Auth::user()->email)){{Auth::user()->email}}@endif">
+{{--                                <span class="placeholder" data-placeholder="Địa chỉ email"></span>--}}
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="address" name="address">
-                                <span class="placeholder" data-placeholder="Địa chỉ"></span>
+                                <input type="text" placeholder="Địa chỉ" class="form-control" id="address" name="address" value="@if(isset(Auth::user()->address)){{Auth::user()->address}}@endif">
+{{--                                <span class="placeholder" data-placeholder="Địa chỉ"></span>--}}
                             </div>
                             <div class="col-md-12 form-group">
                                 <h3>Ghi chú thêm</h3>
