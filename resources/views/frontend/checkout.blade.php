@@ -92,11 +92,30 @@
                                 <li><a href="#">Thuế <span>{{Cart::tax()}}đ</span></a></li>
                                 <li><a href="#">Tổng tiền <span>{{Cart::total()}}đ</span></a></li>
                             </ul>
-                            <a class="primary-btn" href="#">Xác nhận đơn hàng</a>
+                            <a id="submit-bill" class="primary-btn" href="javascript:;">Xác nhận đơn hàng</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @endsection
+@section('script')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        $(document).on('click', "#submit-bill", function () {
+            $.ajax({
+                type : 'post',
+                url: '/submit-bill',
+                success:function () {
+                    toastr.success('Thanh toán thành công!');
+                    window.location.href = '/';
+                }
+            })
+        })
+    </script>
     @endsection

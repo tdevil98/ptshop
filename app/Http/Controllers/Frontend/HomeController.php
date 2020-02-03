@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bill;
+use App\Models\BillDetail;
 use App\Models\Category;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -74,6 +76,28 @@ class HomeController extends Controller
             array_push($products, $product);
         }
         return view('frontend.checkout', compact('products', 'user'));
+    }
+    public function submitBill(){
+        if(Cart::count()<0){
+            return response()->json(['error'=>true]);
+        }else{
+            $bill = new Bill([
+                'user_id' => Auth::user()->id,
+                'total' => str_replace(",", "", Cart::total()),
+            ]);
+            $bill->save();
+            foreach(Cart::content() as $product) {
+                BillDetail::create([
+                    'bill_id' => $bill->id,
+                    'product_id' => $product->id,
+                    'quantity' => $product->qty,
+                    'product_price' => $product->price,
+                    'total' => $product->total
+                ]);
+            }
+            Cart::destroy();
+            return response()->json(['error'=>false]);
+        }
     }
     public function getSubtotal(){
         $subtotal = Cart::subtotal();

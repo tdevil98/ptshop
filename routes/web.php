@@ -16,6 +16,7 @@ Route::middleware('auth')->group(function (){
     Route::get('/checkout', 'Frontend\HomeController@getBill')->name('frontend.get-bill');
     Route::post('/update-cart', 'FrontEnd\HomeController@updateCart');
     Route::post('/remove-cart', 'FrontEnd\HomeController@removeCart');
+    Route::post('/submit-bill', 'FrontEnd\HomeController@submitBill');
     Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 });
 Route::get('/', 'Frontend\HomeController@index');

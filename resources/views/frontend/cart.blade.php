@@ -20,132 +20,105 @@
 @section('content')
     <section class="cart_area">
         <div class="container">
-            <div class="cart_inner">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Sản phẩm</th>
-                            <th scope="col">Giá</th>
-                            <th scope="col">Số lượng</th>
-                            <th scope="col">Tổng tiền</th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (Cart::content() as $product)
-                        <tr>
-                            <td>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img width="100" height="100" src="{{asset('storage/'. $product->options->image)}}" alt="">
+            @if(Cart::count()>0)
+                <div class="cart_inner">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Tổng tiền</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (Cart::content() as $product)
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img width="100" height="100" src="{{asset('storage/'. $product->options->image)}}" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <p><a href="{{route('frontend.product', $product->options->slug)}}">{{$product->name}}</a></p>
+                                        </div>
                                     </div>
-                                    <div class="media-body">
-                                        <p><a href="{{route('frontend.product', $product->options->slug)}}">{{$product->name}}</a></p>
+                                </td>
+                                <td>
+                                    <h5>{{number_format($product->price)}}đ</h5>
+                                </td>
+                                <td>
+                                    <div class="product_count">
+                                        <input type="number" name="qty" maxlength="12" value="{{$product->qty}}" min="0" title="Quantity:"
+                                            class="input-text qty">
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <h5>{{number_format($product->price)}}đ</h5>
-                            </td>
-                            <td>
-                                <div class="product_count">
-                                    <input type="number" name="qty" maxlength="12" value="{{$product->qty}}" min="0" title="Quantity:"
-                                           class="input-text qty">
-                                </div>
-                            </td>
-                            <td>
-                                <h5 class="price">{{number_format($product->total)}}đ</h5>
-                            </td>
-                            <td>
-                                <button title="Xóa" type="button" class="close remove" aria-label="Close" data-id="{{$product->rowId}}">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                        <tr class="bottom_button">
-                            <td>
-                                <a id="update" class="gray_btn" href="javascript:;">Cập nhật giỏ hàng</a>
-                            </td>
-                            <td>
+                                </td>
+                                <td>
+                                    <h5 class="price">{{number_format($product->total)}}đ</h5>
+                                </td>
+                                <td>
+                                    <button title="Xóa" type="button" class="close remove" aria-label="Close" data-id="{{$product->rowId}}">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                            <tr class="bottom_button">
+                                <td>
+                                    <a id="update" class="gray_btn" href="javascript:;">Cập nhật giỏ hàng</a>
+                                </td>
+                                <td>
 
-                            </td>
-                            <td>
+                                </td>
+                                <td>
 
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
 
-                            </td>
-                            <td>
+                                </td>
+                                <td>
 
-                            </td>
-                            <td>
-                                <h5>Tổng cộng</h5>
-                            </td>
-                            <td>
-                                <h5>{{Cart::total()}}đ</h5>
-                            </td>
-                        </tr>
-{{--                        <tr class="shipping_area">--}}
-{{--                            <td>--}}
+                                </td>
+                                <td>
+                                    <h5>Tổng cộng</h5>
+                                </td>
+                                <td>
+                                    <h5>{{Cart::total()}}đ</h5>
+                                </td>
+                            </tr>
 
-{{--                            </td>--}}
-{{--                            <td>--}}
+                            <tr class="out_button_area">
+                                <td>
 
-{{--                            </td>--}}
-{{--                            <td>--}}
-{{--                                <h5>Shipping</h5>--}}
-{{--                            </td>--}}
-{{--                            <td>--}}
-{{--                                <div class="shipping_box">--}}
-{{--                                    <ul class="list">--}}
-{{--                                        <li><a href="#">Flat Rate: $5.00</a></li>--}}
-{{--                                        <li><a href="#">Free Shipping</a></li>--}}
-{{--                                        <li><a href="#">Flat Rate: $10.00</a></li>--}}
-{{--                                        <li class="active"><a href="#">Local Delivery: $2.00</a></li>--}}
-{{--                                    </ul>--}}
-{{--                                    <h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>--}}
-{{--                                    <select class="shipping_select">--}}
-{{--                                        <option value="1">Bangladesh</option>--}}
-{{--                                        <option value="2">India</option>--}}
-{{--                                        <option value="4">Pakistan</option>--}}
-{{--                                    </select>--}}
-{{--                                    <select class="shipping_select">--}}
-{{--                                        <option value="1">Select a State</option>--}}
-{{--                                        <option value="2">Select a State</option>--}}
-{{--                                        <option value="4">Select a State</option>--}}
-{{--                                    </select>--}}
-{{--                                    <input type="text" placeholder="Postcode/Zipcode">--}}
-{{--                                    <a class="gray_btn" href="#">Update Details</a>--}}
-{{--                                </div>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
-                        <tr class="out_button_area">
-                            <td>
+                                </td>
+                                <td>
 
-                            </td>
-                            <td>
+                                </td>
+                                <td>
 
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-                                <div class="checkout_btn_inner d-flex align-items-center">
-                                    <a class="gray_btn" href="/">Trang chủ</a>
-                                    <a class="primary-btn" href="{{route('frontend.get-bill')}}">Tiến hành thanh toán</a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                </td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="/">Trang chủ</a>
+                                        <a class="primary-btn" href="{{route('frontend.get-bill')}}">Tiến hành thanh toán</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            @else
+                <div class="alert alert-warning">
+                    Giỏ hàng của bạn hiện chưa có sản phẩm nào. Quay về<a href="/"> trang chủ</a>
+                </div>
+            @endif
         </div>
     </section>
     @endsection
